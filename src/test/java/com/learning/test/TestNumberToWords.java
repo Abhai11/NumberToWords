@@ -1,39 +1,55 @@
 package com.learning.test;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Arrays;
 
 public class TestNumberToWords {
 
-    @Test
-    public void testLogic(){
-        NumberToWordsConverter converter = new NumberToWordsConverterImpl();
-        System.out.println(converter.toWords(100));
-        System.out.println(converter.toWords(599));
-        System.out.println(converter.toWords(999));
-        System.out.println(converter.toWords(999));
-        System.out.println(converter.toWords(9999));
-        System.out.println(converter.toWords(1000));
-        System.out.println(converter.toWords(5389));
-        System.out.println(converter.toWords(7000));
-        System.out.println(converter.toWords(70000));
-        System.out.println(converter.toWords(10000));
-        System.out.println(converter.toWords(18293));
-        System.out.println(converter.toWords(99999));
-        System.out.println(converter.toWords(11111));
+    NumberToWordsConverter converter;
+
+    @Before
+    public void setUp(){
+        converter = new NumberToWordsConverterImpl();
     }
 
     @Test
-    public void testConversionTill99(){
-        NumberToWordsConverter converter = new NumberToWordsConverterImpl();
-        Assert.assertTrue(converter.toWords(0).equals("Zero"));
-        Assert.assertTrue(converter.toWords(9).equals("nine"));
-        Assert.assertTrue(converter.toWords(11).equals("eleven"));
-        Assert.assertTrue(converter.toWords(20).equals("twenty"));
-        Assert.assertTrue(converter.toWords(21).equals("twenty one"));
-        Assert.assertTrue(converter.toWords(59).equals("fifty nine"));
-        Assert.assertTrue(converter.toWords(99).equals("ninety nine"));
+    public void testConversionOneDigit(){
+        Assert.assertEquals("Zero",converter.toWords(0));
+        Assert.assertEquals("nine",converter.toWords(9));
+    }
+
+    @Test
+    public void testConversionTwoDigit() {
+        Assert.assertEquals("nineteen",converter.toWords(19));
+        Assert.assertEquals("fifty nine", converter.toWords(59));
+    }
+
+    @Test
+    public void testConversionThreeDigit() {
+        Assert.assertEquals("five hundred and nine", converter.toWords(509));
+        Assert.assertEquals("nine hundred and ninety nine",converter.toWords(999));
+    }
+
+    @Test
+    public void testConversionFourDigit() {
+        Assert.assertEquals("nine thousand nine hundred and ninety nine", converter.toWords(9999));
+        Assert.assertEquals("one thousand", converter.toWords(1000));
+        Assert.assertEquals("five thousand three hundred and eighty nine", converter.toWords(5389));
+        Assert.assertEquals("seven thousand and twenty one", converter.toWords(7021));
+    }
+
+    @Test
+    public void testConversionFiveDigit() {
+        Assert.assertEquals("seventy thousand", converter.toWords(70000));
+        Assert.assertEquals("ten thousand and nine", converter.toWords(10009));
+        Assert.assertEquals("eighteen thousand two hundred and ninety three", converter.toWords(18293));
+        Assert.assertEquals("ninety nine thousand nine hundred and ninety nine", converter.toWords(99999));
+        Assert.assertEquals("eleven thousand one hundred and eleven", converter.toWords(11111));
+    }
+
+    @Test
+    public void testConversionMaxInt() {
+        Assert.assertEquals("two billion one hundred forty seven million four hundred eighty three thousand six hundred and forty seven", converter.toWords(Integer.MAX_VALUE));
     }
 }
